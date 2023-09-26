@@ -1,71 +1,81 @@
-import React, {useState} from 'react';
-import {TextInput, SafeAreaView, StyleSheet, Text, Button} from 'react-native';
-
+import React, { useState } from "react";
+import { TextInput, SafeAreaView, StyleSheet, View, Text, Alert, Image } from "react-native";
+import MyButton from "../components/MyButton";
+import executeLogin from "../components/UserLogin";
+import UserRegister from "../components/UserRegister"
+//Rota: https://tamagochiapi-clpsampedro.b4a.run
+//
 const styles = StyleSheet.create({
-    input: {
-        height: 60,
-        margin: 12,
-        borderWidth: 1,
-        borderRadius: 4,
-        padding: 10,
-    },
-
-    login: {
-        fontSize: 30,
-        fontFamily: 'Arial',
-        textAlign: 'center'
-    },
-
-    btLogin: {
-        backgroundColor: '#464646',
-        width: '60%',
-        margin: 'auto'
-    }
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#fff'
+  },
+  input: {
+    height: 50,
+    width: 250,
+    borderRadius: 3,
+    borderColor: 'black',
+    borderWidth: 2,
+    margin: 10,
+  },
+  senha: {
+    flexDirection: "row",
+  },
+  image: {
+    width: 400,
+    height: 100
+  }
 });
 
-const Form = ({navigation}: any) => {
-    const [text, setText] = useState<string>();
-    const [user, setUser] = useState<string>();
-    const [hash, setHash] = useState<string>();
-    const [hasError, setHasError] = useState(false);
+const Login = ({ navigation }: any) => {
+  const [email, setEmail] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
+  const [useSecurity, setUseSecurity] = useState<boolean>(true);
 
-    const onChangeUser = (value : string) => {
-        setUser(value)
-    };
+  const styleButton = {
+    width: 150,
+    backgroundColor: '#274383',
+    height: 60,
+    borderRadius: 10,
+    margin: 20,
+    color: '#fff'
+  }
 
-    const onChangeHash = (value: string) => { // Adicionar as validações da senha
-        if (value.length >= 6) {
-            setHasError(false);
-        } else {
-            setHasError(true);
-        }
-        setText(value);
-        setHash(value);
-    };
+  const validateLogin = () => {
+    if (!email || !password) {
+        Alert.alert('Erro', 'Informe o Login e a Senha para se conectar', [
+        { text: 'OK', onPress: () => console.log('Ok') },
+        ]);
 
-    return (
-        <SafeAreaView>
-            <Text >Usuário</Text>
-            <TextInput
-                style={styles.input}
-                onChangeText={onChangeUser}
-            />
-            <Text>Senha</Text>
-            <TextInput
-                style={styles.input}
-                value={text}
-                onChangeText={onChangeHash}
-            />
-            {hasError ? <Text>A senha deve conter mais de 6 digitos</Text> : null}
+    }
+    else {
+        executeLogin({ navigation }, {email}, {password});
+        
+    }
+}
 
-            <Button 
-                onPress={() => {
-                    navigation.navigate('Home', {id: 1});
-                }}
-                title="Conectar"
-            />
-        </SafeAreaView>
-    );
+const validateRegister = () => {
+  if (password.length <= 6) {
+    Alert.alert('Erro', 'A senha deve ser maior que 6 dígitos', [
+      { text: 'OK', onPress: () => console.log('Ok') },
+    ]);
+  } else {
+    UserRegister({email}, {password});
+  }
+}
+
+  return (
+    <SafeAreaView style={styles.container}>
+      <Image source={require('../images/pxfuel.jpg')} style={styles.image} />
+      <TextInput value={email} style={styles.input} placeholder="Usuário" onChangeText={setEmail} />
+      <TextInput value={password} secureTextEntry={useSecurity} style={styles.input} placeholder="Senha" onChangeText={setPassword} />
+
+      <MyButton title="Login" onPressButton={validateLogin} containerStyle={styleButton} />
+      <MyButton title="Registrar" onPressButton={validateRegister} containerStyle={styleButton} />
+    </SafeAreaView>
+  );
 };
 
-export default Form;
+export default Login;
