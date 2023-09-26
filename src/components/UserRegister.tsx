@@ -18,10 +18,15 @@ const UserRegister = async ({email}:email, {password}:password) => {
       { text: 'OK', onPress: () => console.log('Ok') },
     ]);
   } catch (error) {
+    if(error = 500){
+      Alert.alert('Erro, Usuário já cadastrado!', `${error}`, [
+          { text: 'ok', onPress: () => console.log('Ok') },
+        ]);
+  }else{
     Alert.alert('Erro', `${error}`, [
       { text: 'Ok', onPress: () => console.log('Ok') },
     ]);
-  }
+  }}
 };
 
 export default UserRegister
