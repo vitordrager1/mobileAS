@@ -15,6 +15,7 @@ const styles = StyleSheet.create({
 
 type ButtonProps ={
     title : string
+    disable: boolean
     onPressButton: ()=>void
     containerStyle:{
       width: number;
@@ -25,13 +26,13 @@ type ButtonProps ={
 
     }
 }
-const MyButton = ({title,onPressButton, containerStyle}:ButtonProps) => {
+const MyButton = ({title, disable, onPressButton, containerStyle}:ButtonProps) => {
   console.log({title})
     return (
       
-      <TouchableOpacity onPress={onPressButton}>
+      <TouchableOpacity onPress={onPressButton} disabled={disable}>
       <View style={{...styles.buttonContainer, width:containerStyle.width,
-         height:containerStyle.height, backgroundColor:containerStyle.backgroundColor, borderRadius:containerStyle.borderRadius, margin:containerStyle.margin}}>
+         height:containerStyle.height, backgroundColor:disable?"red":containerStyle.backgroundColor, borderRadius:containerStyle.borderRadius, margin:containerStyle.margin}}>
           
         <Text style={styles.title}>{title}</Text>
       </View>

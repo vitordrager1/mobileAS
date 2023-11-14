@@ -1,5 +1,8 @@
+//Recebe o email e a senha do usuário e tenta realizar o login junto da API
+//Retorna para a home ou erro.
 import axios from "axios";
 import { Alert } from "react-native";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 type email = {
     email: string,
@@ -14,8 +17,16 @@ const executeLogin = async ({ navigation }: any,{email}:email, {password}:passwo
         email: email,
         password: password,
         });
-        navigation.navigate("Home")
-        console.log('Resposta do servidor:', data);
+        try {
+            await AsyncStorage.setItem('token', data.token);
+            email = ""
+            password = ""
+            navigation.navigate("Home")
+            console.log('Resposta do servidor:', data);
+          } catch (error) {
+            Alert.alert('Erro', 'Erro ao tentar se conectar! Tente Novamente')
+            return
+          }
     } catch (error) {
         if(error = 401){
             Alert.alert('Erro, Usuário ou Senha incorretos', `${error}`, [

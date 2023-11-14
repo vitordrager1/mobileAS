@@ -25,9 +25,9 @@ const styles = StyleSheet.create({
   },
   image: {
     width: '100%',
-    height: 700
+    height: 700,
   },
-  loginContainer: {
+  registerContainer: {
     opacity: 0.8,
     margin: 10,
     padding: 10,
@@ -64,52 +64,68 @@ const styles = StyleSheet.create({
   },
 });
 
-const Login = ({ navigation }: any) => {
+const Register = ({ navigation }: any) => {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
+  const [password2, setPassword2] = useState<string>('');
   const [useSecurity, setUseSecurity] = useState<boolean>(true);
 
-  const validateLogin = () => {
-    if (!email || !password) {
-        Alert.alert('Erro', 'Informe o Login e a Senha para se conectar', [
-        { text: 'OK', onPress: () => console.log('Ok') },
-        ]);
+  const styleButton = {
+    width: 150,
+    backgroundColor: '#274383',
+    height: 60,
+    borderRadius: 10,
+    margin: 20,
+    color: '#fff'
+  }
 
-    }
-    else {
-        executeLogin({ navigation }, {email}, {password});
-        
-    }
-}
-
-const registerScreen = () => {
-  navigation.navigate("Register")
+const validateRegister = () => {
+  if(email.length <= 0) {
+    Alert.alert('Erro', 'Preencha o campo e-mail', [
+      { text: 'OK', onPress: () => console.log('Ok') },
+    ]);
+    return 0
+  }
+  if (password.length <= 6) {
+    Alert.alert('Erro', 'A senha deve ser maior que 6 dígitos', [
+      { text: 'OK', onPress: () => console.log('Ok') },
+    ]);
+    return 0
+  } 
+  if (password !== password2) {
+    Alert.alert('Erro', 'As senhas informadas devem ser iguais', [
+      { text: 'OK', onPress: () => console.log('Ok') },
+    ]);
+    return 0
+  } else {
+    UserRegister({ navigation },{email}, {password});
+  }
 }
 
   return (
     <SafeAreaView style={styles.container}>
       <ImageBackground source={require('../images/pxfuel.jpg')} style={styles.image}>
-        <View style={styles.loginContainer}>
+        <View style={styles.registerContainer}>
           <View style={styles.inputContainer}>
+            <Text>Email</Text>
             <TextInput value={email} style={styles.input} placeholder="E-mail" onChangeText={setEmail} />
+            <Text>Senha</Text>
             <TextInput value={password} secureTextEntry={useSecurity} style={styles.input} placeholder="Senha" onChangeText={setPassword} />
+            <Text>Confirmar senha</Text>
+            <TextInput value={password2} secureTextEntry={useSecurity} style={styles.input} placeholder="Confirmar senha" onChangeText={setPassword2} />
           </View>
           <View style={styles.buttonContainer}>
             <Pressable
               style={styles.button} 
-              onPress={() => {validateLogin()}}>
-              <Text style={styles.buttonText}>Conectar-se</Text>
-            </Pressable>
-            <Pressable
-              style={styles.button} 
-              onPress={() => {registerScreen()}}>
-              <Text style={styles.buttonText}>Registrar</Text>
+              onPress={() => {validateRegister()}}>
+              <Text style={styles.buttonText}>Cadastrar</Text>
             </Pressable>
           </View>
+          
         </View>
       </ImageBackground>
     </SafeAreaView>
   );
 };
 
-export default Login;
+export default Register;
