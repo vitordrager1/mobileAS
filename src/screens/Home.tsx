@@ -26,6 +26,8 @@ const imagem5 = require ('../images/petZed.png')
 const styles = StyleSheet.create({
   background: {
     alignItems: 'center',
+    opacity: 0.8,
+    backgroundColor: '#FFA6C9'
   },
   headerText: {
     fontWeight: 'bold',
@@ -36,8 +38,9 @@ const styles = StyleSheet.create({
     padding: 3,
     margin: 3,
     borderRadius: 5,
-    backgroundColor: '#d9d9d9',
+    backgroundColor: '#FFA6C9',
     flexDirection: 'row',
+    opacity: 0.8,
   },
   countryImage: {
     height: '100%',
@@ -81,10 +84,10 @@ const styles = StyleSheet.create({
   },
   image: {
     width: '100%',
-    height: 700,
+    height: 800,
   },
   viewContainer: {
-    backgroundColor: '#d9d9d9',
+    backgroundColor: '#FFA6C9',
     margin: 5,
     padding: 4,
     alignItems: 'center',
@@ -161,7 +164,7 @@ const Home = ({navigation}: any) => {
     );
   };
 
-  const ReturnImage = () => {
+  const ReturnImage = () => {0
     //randomizar um indize
     const imagens = [imagem1, imagem2, imagem3, imagem4, imagem5]
     const numeroAleatorio = Math.floor(Math.random() * imagens.length);
